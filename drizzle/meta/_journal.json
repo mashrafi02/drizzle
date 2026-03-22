@@ -8,6 +8,13 @@
       "when": 1774017981142,
       "tag": "0000_ancient_famine",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1774160501943,
+      "tag": "0001_shiny_captain_stacy",
+      "breakpoints": true
     }
   ]
 }
