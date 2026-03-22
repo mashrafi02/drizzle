@@ -2,7 +2,7 @@
 import { boolean, index, integer, pgEnum, pgTable, primaryKey, real, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 
 
-export const UserRole = pgEnum("userROle", ["ADMIN", "GUEST"]);
+export const UserRole = pgEnum("userRole", ["ADMIN", "GUEST"]);
 export const UserTable = pgTable("user", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: varchar("name", { length: 255 }).notNull(),
@@ -21,7 +21,7 @@ export const UserTable = pgTable("user", {
 export const UserPreferencesTable = pgTable("userPreferences", {
     id: uuid("id").primaryKey().defaultRandom(),
     emailUpdates: boolean("emailUpdates").notNull().default(false),
-    userId: uuid("userId").references(() => UserTable.id, {onDelete: "no action"}).notNull()
+    userId: uuid("userId").references(() => UserTable.id, {onDelete: "no action"}).notNull().unique()
 })
 
 
@@ -52,7 +52,7 @@ export const PostCategoryTable = pgTable("postCategory", {
 
 
 // you do some other interesting things like
-export const UserTestTable = pgTable("user", {
+export const UserTestTable = pgTable("user_test", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: varchar("name", { length: 255 }).notNull(),
     // age: integer("age").notNull().array(), for array of numers instead of just a number
