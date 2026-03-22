@@ -1,4 +1,5 @@
 
+import { relations } from "drizzle-orm";
 import { boolean, index, integer, pgEnum, pgTable, primaryKey, real, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 
 
@@ -61,3 +62,60 @@ export const UserTestTable = pgTable("user_test", {
     email: varchar("email", { length:255 }).notNull().unique(),
     role: UserRole("userRole").default("GUEST").notNull()
 })
+
+
+
+
+// RELATIONS ################################################# ----------------------------------------
+
+
+export const UserRelations = relations(UserTable, ({one, many}) => {
+    return {
+        preferences: one(UserPreferencesTable),
+        posts: many(PostTable)
+    }
+})
+
+
+export const UserPreferenceRelation = relations(UserPreferencesTable, ({one}) => {
+    return {
+        user: one(UserTable, {
+            fields: [UserPreferencesTable.userId],
+            references: [UserTable.id]
+        })
+    }
+})
+
+// whenever you are on the side that has the foreign key
+
+
+export const PostSRelation = relations(PostTable, ({ one, many }) => {
+    return {
+        author: one(UserTable, {
+            fields: [PostTable.authorId],
+            references: [UserTable.id]
+        }),
+        postCategories: many(PostCategoryTable)
+    }
+})
+
+
+export const CategoryRelation = relations(CategoryTable, ({many}) => {
+    return {
+        postsCategories: many(PostCategoryTable)
+    }
+})
+
+
+export const PostCategoryRelation = relations(PostCategoryTable, ({ one }) => {
+    return {
+        post: one(PostTable, {
+            fields: [PostCategoryTable.postId],
+            references: [PostTable.id]
+        }),
+        category: one(CategoryTable, {
+            fields: [PostCategoryTable.categoryId],
+            references: [CategoryTable.id]
+        })
+    }
+} )
